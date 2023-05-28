@@ -26,4 +26,16 @@ contract Ink is ERC20Upgradeable, OwnableUpgradeable {
     function burn(address from, uint256 amount) external onlyCanvas {
         _burn(from, amount);
     }
+
+    // spend allowances when burning token in `Canvas`
+    function _beforeTokenTransfer(
+        address from,
+        address to,
+        uint256 amount
+    ) internal virtual override {
+        if (to == address(0)) {
+            // burn
+            _spendAllowance(from, msg.sender, amount);
+        }
+    }
 }

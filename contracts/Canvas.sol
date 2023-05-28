@@ -39,6 +39,6 @@ contract Canvas is ICanvas, Initializable {
         uint256 colorId
     ) internal virtual {
         require(colorId < 24, "Canvas: unknown color");
-        ink.burn(by, 1e18);
+        ink.burn(by, 1e18); // spends allowance, see `Ink`
     }
 }

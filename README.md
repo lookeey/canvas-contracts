@@ -1,8 +1,16 @@
-# Sample Hardhat Project
+# Canvas Contracts
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
+This repo contains solidity contracts for the Canvas experiment.
 
-Try running some of the following tasks:
+Canvas includes:
+
+- a native coin staking system, which mints `Ink` tokens.
+  - optional locking for increased gains
+  - penalty for withdrawing funds too early
+- a governance system, based on how much users have staked and how long they've locked for
+- an `Ink` token, which can be used to place pixel on `Canvas`
+- the `Canvas`, which allows for placing pixels in a virtually infinite area (limited by int range)
+  **Canvas, Ink and InkMaker are upgradeable contracts**, controlled by governance.
 
 ```shell
 npx hardhat help

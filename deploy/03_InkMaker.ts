@@ -1,18 +1,19 @@
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
-import { ethers } from "hardhat";
-import { InkMaker } from "../typechain-types/index";
+import { ethers, network } from "hardhat";
+import { Ink, InkMaker } from "../typechain-types/index";
 import {
   MAX_INK_REWARD_PER_DAY,
   STAKING_SUPPLY_SOFT_CAP,
 } from "../config/index";
+import { parseEther } from "ethers/lib/utils";
 
 const func: DeployFunction = async function ({
   deployments,
   getNamedAccounts,
 }: HardhatRuntimeEnvironment) {
   const { deploy } = deployments;
-  const { deployer } = await getNamedAccounts();
+  const { deployer, user1 } = await getNamedAccounts();
 
   const deployResult = await deploy("InkMaker", {
     from: deployer,
@@ -35,7 +36,10 @@ const func: DeployFunction = async function ({
   );
   console.log("Initialized InkMaker with Ink at", inkAddress);
 
-  const ink = await ethers.getContractAt("Ink", inkAddress);
+  const ink: Ink = await ethers.getContractAt("Ink", inkAddress);
+  if (network.name === "hardhat") {
+    await ink.mint(user1, parseEther("1000000"));
+  }
   await ink.transferOwnership(inkMaker.address);
   console.log("Set InkMaker as owner of Ink");
 };
